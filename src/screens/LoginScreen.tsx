@@ -1,14 +1,36 @@
 import React from 'react';
-import { Text, View, TextInput, Platform, TouchableOpacity } from 'react-native' ;
+import { Text, View, TextInput, Platform, TouchableOpacity, KeyboardAvoidingView, Keyboard } from 'react-native' ;
 import { Background } from '../components/Background';
 import { WhiteLogo } from '../components/WhiteLogo';
 import { loginStyles } from '../theme/loginTheme';
+import { useForm } from '../hooks/useForm';
+import {StackScreenProps} from '@react-navigation/stack'
 
-export const LoginScreens = () => {
+interface Props extends StackScreenProps<any, any> {}
+
+export const LoginScreens = ({navigation}: Props) => {
+
+  const { email, onChange, password } = useForm({
+    email: '',
+    password: ''
+  });
+
+  const onLogin = ( ) => {
+    console.log({email, password});
+    Keyboard.dismiss();
+  };
+
+
   return (
     <>
         {/* Background */}
-        <Background />
+      <Background />
+
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={( Platform.OS === 'ios') ? 'padding': 'height'}
+      >
+
 
       <View style={loginStyles.formContainer}>
 
@@ -29,7 +51,9 @@ export const LoginScreens = () => {
           ]}
           selectionColor='white'
           
-          // Onchange, value
+          onChangeText={(value) => onChange(value.toString(), 'email')}
+          value={email}
+          onSubmitEditing={onLogin}
 
           autoCapitalize='none'
           autoCorrect={false}
@@ -44,13 +68,16 @@ export const LoginScreens = () => {
           placeholder='********'
           placeholderTextColor='rgba(255,255,255,0.4)'
           underlineColorAndroid='white'
+          secureTextEntry
           style={[
             loginStyles.inputField,
             (Platform.OS === 'ios') && loginStyles.inputFieldIos
           ]}
           selectionColor='white'
 
-          // Onchange, value
+          onChangeText={(value) => onChange(value.toString(), 'password')}
+          value={password}
+          onSubmitEditing={onLogin}
 
           autoCapitalize='none'
           autoCorrect={false}
@@ -63,6 +90,7 @@ export const LoginScreens = () => {
           <TouchableOpacity
             activeOpacity={0.8}
             style={loginStyles.button}
+            onPress={onLogin}
           > 
             <Text style={loginStyles.buttonText}>Login</Text>
           </TouchableOpacity>
@@ -73,13 +101,16 @@ export const LoginScreens = () => {
         <View style={loginStyles.newUserContainer}>
           <TouchableOpacity
             activeOpacity={0.8}
-            onPress={() => console.log('press')}
+            onPress={() => navigation.replace('RegisterScreen')}
           >
             <Text style={loginStyles.buttonText}>Crear cuenta </Text>
 
           </TouchableOpacity>
         </View>
+        
       </View>
+      </KeyboardAvoidingView>
+
     </>
   )
 };
