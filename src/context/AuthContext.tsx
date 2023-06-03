@@ -37,22 +37,34 @@ export const AuthProvider = ( {children}: any) => {
         try {
             
             const resp = await cafeApi.post<LoginResponse>('/auth/login', {correo, password});
-            console.log(resp.data)
+            dispatch({
+                type: 'signUp',
+                payload: {
+                    token: resp.data.token,
+                    user: resp.data.usuario
+                }
+            })
             
         } catch (error) { 
-            console.log(error)
+            console.log(error);
+            dispatch({
+                type: 'addError',
+                payload: 'Informacion incorrecta'
+            })
         }
     };
 
-    const      signUp = () => {
+    const signUp = () => {
       
      };
 
 
-    const     logOut = () => { };
+    const logOut = () => { };
 
 
-    const     removeError = () => { };    
+    const removeError = () => { 
+        dispatch({type: 'removeError'})
+    };    
 
 
 
