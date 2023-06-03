@@ -23,14 +23,11 @@ export const LoginScreens = ({navigation}: Props) => {
 
     Alert.alert(
       'Login incorrecto',
-       errorMessage,
-       [
+       errorMessage, [
         {
           text: 'Ok',
           onPress: () => removeError
-        }
-       ]
-      );
+        }]);
   }, [errorMessage])
 
   const onLogin = ( ) => {
