@@ -1,13 +1,16 @@
-import React from 'react';
-import { Text, View, KeyboardAvoidingView, TextInput, Platform, TouchableOpacity, Keyboard } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { Text, View, KeyboardAvoidingView, TextInput, Platform, TouchableOpacity, Keyboard, Alert } from 'react-native';
 import { WhiteLogo } from '../components/WhiteLogo';
 import { loginStyles } from '../theme/loginTheme';
 import { useForm } from '../hooks/useForm';
 import { StackScreenProps } from '@react-navigation/stack'
+import { AuthContext } from '../context/AuthContext';
 
 interface Props extends StackScreenProps<any, any>{}
 
 export const RegisterScreen = ({navigation}: Props) => {
+
+  const { signUp, errorMessage, removeError } = useContext(AuthContext)
 
   const { email, onChange, name, password } = useForm({
     name:'',
@@ -15,9 +18,28 @@ export const RegisterScreen = ({navigation}: Props) => {
     password: ''
   });
 
+  useEffect(() => {
+    if(errorMessage.length === 0) return;
+
+    Alert.alert(
+      'Registro incorrecto',
+       errorMessage, [
+        {
+          text: 'Ok',
+          onPress: () => removeError
+        }]);
+  }, [errorMessage])
+
+
+
   const onRegister = ( ) => {
     console.log({email, password, name});
     Keyboard.dismiss();
+    signUp({
+      nombre: name,
+      correo: email,
+      password
+    })
   };
 
   return (
@@ -107,7 +129,7 @@ export const RegisterScreen = ({navigation}: Props) => {
           <TouchableOpacity
             activeOpacity={0.8}
             style={loginStyles.button}
-            onPress={onRegister}
+            onPress={ onRegister}
           > 
             <Text style={loginStyles.buttonText}>Crear cuenta</Text>
           </TouchableOpacity>
@@ -129,3 +151,4 @@ export const RegisterScreen = ({navigation}: Props) => {
     </>
   )
 }
+ 
