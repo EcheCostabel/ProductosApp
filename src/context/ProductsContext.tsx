@@ -1,5 +1,6 @@
-import React, { createContext, useState } from 'react';
-import { Producto } from '../interfaces/appInterfaces';
+import React, { createContext, useEffect, useState } from 'react';
+import { Producto, ProductsResponse } from '../interfaces/appInterfaces';
+import cafeApi from '../api/cafeApi';
 
 
 type ProductsContextProps = {
@@ -21,21 +22,32 @@ export const ProductsProvider = ({children}: any ) => {
 
     const [ products, setProducts ] = useState<Producto[]>([]);
 
+    useEffect(() => {
+        loadProducts();
+    }, [])
+
     const loadProducts = async() =>{
+        const resp = await cafeApi.get<ProductsResponse>('productos?limite=50');
+        setProducts([...products, ...resp.data.productos]);
         
     }
+
     const addProduct = async( categoryId: string, productName: string ) => {
         
     };
+
     const updateProduct = async( categoryId: string, productName: string, productId: string ) => {
 
     };
+
     const deleteProduct = async( id: string ) => {
         
     };
+
     const loadProductById = async( id: string ) => {
         throw new Error('Nos implemented')
     };
+
     
     // Cambiar any
     const uploadImage = async( data: any, id: string ) => {
