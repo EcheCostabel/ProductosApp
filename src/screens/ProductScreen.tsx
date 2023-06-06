@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, ScrollView, TextInput, Button } from 'react-nat
 import { ProductsStackParams } from '../navigator/ProductsNavigator';
 import { useNavigation } from '@react-navigation/native';
 import {Picker} from '@react-native-picker/picker';
+import { useCategorias } from '../hooks/useCategories';
 
 interface Props extends StackScreenProps<ProductsStackParams, 'ProductScreen'>{}
 
@@ -11,6 +12,8 @@ export const ProductScreen = ({ route }: Props) => {
 
 
   const [selectedLanguage, setSelectedLanguage] = useState();
+
+  const { categories } = useCategorias();
 
   const navigation = useNavigation();
 
@@ -40,9 +43,20 @@ export const ProductScreen = ({ route }: Props) => {
               selectedValue={selectedLanguage}
               onValueChange={(itemValue, itemIndex) =>
                 setSelectedLanguage(itemValue)
-              }>
-              <Picker.Item label="Java" value="java" />
-              <Picker.Item label="JavaScript" value="js" />
+              }
+              >
+
+                {
+                  categories.map(cat => (
+                    <Picker.Item 
+                        label={cat.nombre} 
+                        value={cat._id}
+                        key={cat._id}
+                    />
+
+                  ))
+                }
+             
           </Picker>
 
 
