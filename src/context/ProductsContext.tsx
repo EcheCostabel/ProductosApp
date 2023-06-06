@@ -27,7 +27,7 @@ export const ProductsProvider = ({children}: any ) => {
     }, [])
 
     const loadProducts = async() =>{
-        const resp = await cafeApi.get<ProductsResponse>('productos?limite=50');
+        const resp = await cafeApi.get<ProductsResponse>('/productos?limite=50');
         setProducts([...products, ...resp.data.productos]);
         
     }

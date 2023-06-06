@@ -1,10 +1,13 @@
-import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
 import { ProductsScreen } from '../screens/ProductsScreen';
 import { ProductScreen } from '../screens/ProductScreen';
+import { TouchableOpacity, Text } from 'react-native'
+
+
 
 export type ProductsStackParams = {
-    ProductsScree: undefined;
+    ProductsScreen: undefined;
     ProductScreen: { id?: string, name: string}
 }
 
@@ -33,7 +36,6 @@ export const ProductsNavigator = () => {
         <Stack.Screen
             name='ProductScreen'
             component={ProductScreen}
-            options={{title: 'Productos'}}
         />
     </Stack.Navigator>
   )
