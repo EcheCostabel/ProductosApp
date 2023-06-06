@@ -36,6 +36,7 @@ export const ProductsProvider = ({children}: any ) => {
     const loadProductById = async( id: string ) => {
         throw new Error('Nos implemented')
     };
+    
     // Cambiar any
     const uploadImage = async( data: any, id: string ) => {
         
