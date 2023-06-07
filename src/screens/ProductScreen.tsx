@@ -1,6 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput, Button } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, TextInput, Button, Image } from 'react-native';
 import { ProductsStackParams } from '../navigator/ProductsNavigator';
 import { useNavigation } from '@react-navigation/native';
 import {Picker} from '@react-native-picker/picker';
@@ -13,7 +13,6 @@ interface Props extends StackScreenProps<ProductsStackParams, 'ProductScreen'>{}
 export const ProductScreen = ({ route }: Props) => {
 
 
-  const [selectedLanguage, setSelectedLanguage] = useState();
 
   const { name= '', id= '' } = route.params;
 
@@ -71,11 +70,11 @@ export const ProductScreen = ({ route }: Props) => {
           <Text style={styles.label}>Categoria:</Text>
 
           <Picker
-              selectedValue={selectedLanguage}
-              onValueChange={(itemValue, itemIndex) =>
-                setSelectedLanguage(itemValue)
-              }
+              selectedValue={categoriaId}
+              onValueChange={(value) => onChange(value, 'categoriaId')}
               >
+
+
 
                 {
                   categories.map(cat => (
@@ -113,10 +112,19 @@ export const ProductScreen = ({ route }: Props) => {
               />
 
           </View>
+          {
+            (img.length > 0 ) &&   
+              <Image
+                source={{uri: img}}
+                style={{
+                  marginTop: 20,
+                  width: '100%',
+                  height: 300 ,
+              }}
+            />
+          }
 
-            <Text>
-              {JSON.stringify(form, null, 5)}
-            </Text>
+          
 
 
         </ScrollView>
