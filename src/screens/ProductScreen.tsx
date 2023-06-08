@@ -1,4 +1,5 @@
 import { StackScreenProps } from '@react-navigation/stack';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import React, { useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TextInput, Button, Image } from 'react-native';
 import { ProductsStackParams } from '../navigator/ProductsNavigator';
@@ -8,16 +9,18 @@ import { useCategorias } from '../hooks/useCategories';
 import { useForm } from '../hooks/useForm';
 import { ProductsContext } from '../context/ProductsContext';
 
+
+
 interface Props extends StackScreenProps<ProductsStackParams, 'ProductScreen'>{}
 
 export const ProductScreen = ({ route }: Props) => {
 
-
+  
 
   const { name= '', id= '' } = route.params;
 
   const { categories } = useCategorias();
-  const { loadProductById, addProduct, updateProduct } = useContext(ProductsContext)
+  const { loadProductById, addProduct, updateProduct, products } = useContext(ProductsContext)
 
   const { _id, categoriaId, nombre, img, form, onChange, setFormValue } = useForm({
     _id: id,
@@ -60,6 +63,15 @@ export const ProductScreen = ({ route }: Props) => {
     const newProduct = await addProduct(tempCategoriaId, nombre);
     onChange(newProduct._id, '_id')
   }
+ };
+
+ const takePhoto = ( ) => {
+  launchCamera({
+    mediaType: 'photo',
+    quality: 0.5
+   }, (resp)=> {
+    console.log(resp)
+  })
  }
 
 
@@ -111,7 +123,7 @@ export const ProductScreen = ({ route }: Props) => {
               <View style={{flexDirection: 'row', justifyContent: 'center', marginTop: 10}}>
                 <Button
                   title='Camara'
-                  onPress={() => {}}
+                  onPress={takePhoto}
                   color='#5856D6'
                 />
                 <View style={{width: 10,}} />
@@ -119,7 +131,7 @@ export const ProductScreen = ({ route }: Props) => {
                 <Button
                   title='Galeria'
                   onPress={() => {}}
-                  color='#5856D6'
+                  color='#5856D6' 
                 />
           </View>
             )
