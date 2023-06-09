@@ -80,6 +80,18 @@ export const ProductScreen = ({ route }: Props) => {
     uploadImage(resp, _id)
    })
  }
+ const pickPhoto = ( ) => {
+  ImagePicker.launchImageLibraryAsync({
+    quality: 0.5
+   })
+   .then((resp) => {
+    if(resp.canceled) return;
+    if(!resp.assets[0].uri) return;
+
+    setTempUri(resp.assets[0].uri)
+    uploadImage(resp, _id)
+   })
+ }
 
 
 
@@ -137,7 +149,7 @@ export const ProductScreen = ({ route }: Props) => {
 
                 <Button
                   title='Galeria'
-                  onPress={() => {}}
+                  onPress={pickPhoto}
                   color='#5856D6' 
                 />
           </View>
