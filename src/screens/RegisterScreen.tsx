@@ -55,7 +55,7 @@ export const RegisterScreen = ({navigation}: Props) => {
       <View style={loginStyles.formContainer}>
 
         {/* Keyboard avoid view */}
-        <WhiteLogo />
+        {/* <WhiteLogo /> */}
 
         <Text style={loginStyles.title}>Registro</Text>
 

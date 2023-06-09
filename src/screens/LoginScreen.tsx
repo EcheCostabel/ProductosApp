@@ -52,7 +52,7 @@ export const LoginScreens = ({navigation}: Props) => {
       <View style={loginStyles.formContainer}>
 
         {/* Keyboard avoid view */}
-        <WhiteLogo />
+        {/* <WhiteLogo /> */}
 
         <Text style={loginStyles.title}>Login</Text>
 

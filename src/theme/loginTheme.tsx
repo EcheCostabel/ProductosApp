@@ -23,6 +23,8 @@ export const loginStyles = StyleSheet.create({
     inputField: {
         color: 'white',
         fontSize: 20,
+        paddingVertical: 7,
+        paddingHorizontal: 5
     },
     inputFieldIos: {
         borderBottomColor: 'white',

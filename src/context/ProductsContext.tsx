@@ -78,8 +78,10 @@ export const ProductsProvider = ({children}: any ) => {
             name: data.assets[0].fileName
         }
 
-        const formData = new FormData();
-        formData.append('archivo', fileToUpload)
+        if (fileToUpload.uri && fileToUpload.type && fileToUpload.name) {
+            const formData = new FormData();
+            formData.append('archivo', fileToUpload);
+      
 
         try {
             const resp = await cafeApi.put(`/upload/productos/${id}`, formData);
@@ -88,12 +90,9 @@ export const ProductsProvider = ({children}: any ) => {
         } catch (error) {
             console.log(error)
         }
-
-
     }    
-
-
     } 
+}
 
     return (
         <ProductsContext.Provider value={{
