@@ -1,6 +1,5 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TextInput, Button, Image } from 'react-native';
 import { ProductsStackParams } from '../navigator/ProductsNavigator';
 import { useNavigation } from '@react-navigation/native';
@@ -8,6 +7,7 @@ import {Picker} from '@react-native-picker/picker';
 import { useCategorias } from '../hooks/useCategories';
 import { useForm } from '../hooks/useForm';
 import { ProductsContext } from '../context/ProductsContext';
+import * as ImagePicker from 'expo-image-picker';
 
 
 
@@ -18,6 +18,8 @@ export const ProductScreen = ({ route }: Props) => {
   
 
   const { name= '', id= '' } = route.params;
+
+  const [ tempUri, setTempUri ] = useState<string>()
 
   const { categories } = useCategorias();
   const { loadProductById, addProduct, updateProduct, products } = useContext(ProductsContext)
@@ -43,6 +45,7 @@ export const ProductScreen = ({ route }: Props) => {
   loadProduct()
  }, [])
 
+
  const loadProduct = async() => {
   if(id.length === 0 ) return;
    const product = await loadProductById(id);
@@ -66,12 +69,15 @@ export const ProductScreen = ({ route }: Props) => {
  };
 
  const takePhoto = ( ) => {
-  launchCamera({
-    mediaType: 'photo',
+  ImagePicker.launchCameraAsync({
     quality: 0.5
-   }, (resp)=> {
-    console.log(resp)
-  })
+   })
+   .then((resp) => {
+    if(resp.canceled) return;
+    if(!resp.assets[0].uri) return;
+
+    setTempUri(resp.assets[0].uri)
+   })
  }
 
 
@@ -139,9 +145,21 @@ export const ProductScreen = ({ route }: Props) => {
 
          
           {
-            (img.length > 0 ) &&   
+            (img.length > 0  && !tempUri) &&   
               <Image
                 source={{uri: img}}
+                style={{
+                  marginTop: 20,
+                  width: '100%',
+                  height: 300 ,
+              }}
+            />
+          }
+
+          {
+            (tempUri) &&   
+              <Image
+                source={{uri: tempUri}}
                 style={{
                   marginTop: 20,
                   width: '100%',
